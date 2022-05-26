@@ -23,8 +23,8 @@ const UserList = () => {
 		}
 	};
 	return (
-		<div className="columns">
-			<div className="column is-half">
+		<div className="mt-5 columns is-half">
+			<div className="column">
 				<Link to="add" className="button is-primary">
 					Add User
 				</Link>

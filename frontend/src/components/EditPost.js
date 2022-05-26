@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 
-function EditUser() {
+function EditPost() {
 	const [name, setName] = useState('');
 	const [email, setEmail] = useState('');
 	const [gender, setGender] = useState('Male');
@@ -10,19 +10,19 @@ function EditUser() {
 	const { id } = useParams();
 
 	useEffect(() => {
-		const getUserById = async () => {
-			const res = await axios.get(`http://localhost:5000/users/${id}`);
+		const getPostById = async () => {
+			const res = await axios.get(`http://localhost:5000/Posts/${id}`);
 			setName(res.data.name);
 			setEmail(res.data.email);
 			setGender(res.data.gender);
 		};
-		getUserById();
+		getPostById();
 	}, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-	const UpdateUser = async (e) => {
+	const UpdatePost = async (e) => {
 		e.preventDefault();
 		try {
-			await axios.patch(`http://localhost:5000/users/${id}`, {
+			await axios.patch(`http://localhost:5000/Posts/${id}`, {
 				name,
 				email,
 				gender,
@@ -39,7 +39,7 @@ function EditUser() {
 				<Link to="/" className="button is-primary">
 					Back
 				</Link>
-				<form onSubmit={UpdateUser}>
+				<form onSubmit={UpdatePost}>
 					<div className="field">
 						<label className="label">Name</label>
 						<div className="control">
@@ -86,4 +86,4 @@ function EditUser() {
 	);
 }
 
-export default EditUser;
+export default EditPost;

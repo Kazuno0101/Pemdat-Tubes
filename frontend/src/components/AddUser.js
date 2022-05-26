@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 function AddUser() {
 	const [name, setName] = useState('');
@@ -22,14 +22,12 @@ function AddUser() {
 		}
 	};
 
-	const moveHome = () => {
-		navigate('/');
-	};
-
 	return (
 		<div className="columns">
 			<div className="column is-half">
-				<button onClick={moveHome}>Back</button>
+				<Link to="/" className="button is-primary">
+					Back
+				</Link>
 				<form onSubmit={saveUser}>
 					<div className="field">
 						<label className="label">Name</label>
