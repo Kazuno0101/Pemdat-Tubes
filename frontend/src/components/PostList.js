@@ -22,6 +22,24 @@ const PostList = () => {
 			console.log(error);
 		}
 	};
+
+	const handleLike = async (id) => {
+		const res = await axios.get(`http://localhost:5000/post/${id}`);
+		try {
+			const json = JSON.stringify({
+				like: res.data.like + 1,
+			});
+			await axios.patch(`http://localhost:5000/post/${id}`, json, {
+				headers: {
+					// Overwrite Axios's automatically set Content-Type
+					'Content-Type': 'application/json',
+				},
+			});
+			getPost();
+		} catch (error) {
+			console.log(error);
+		}
+	};
 	return (
 		<div className="columns is-half">
 			<div className="column">
@@ -62,10 +80,22 @@ const PostList = () => {
 												post._id
 											)
 										}
-										className="button is-danger is-small"
+										className="mx-2 button is-danger is-small"
 									>
 										Delete
 									</button>
+									<button
+										onClick={() => handleLike(post._id)}
+										className="mr-2 button is-primary is-small"
+									>
+										Like
+									</button>
+									<Link
+										to={`post/comment/${post._id}`}
+										className="button is-info is-small"
+									>
+										Comment
+									</Link>
 								</td>
 							</tr>
 						))}

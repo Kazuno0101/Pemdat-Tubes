@@ -1,6 +1,10 @@
 import mongoose from 'mongoose';
 
 const Comment = mongoose.Schema({
+	id: {
+		type: Number,
+		required: false,
+	},
 	username: {
 		type: String,
 		required: false,
@@ -37,7 +41,7 @@ const Post = mongoose.Schema({
 		required: true,
 	},
 	comment: {
-		type: Comment,
+		type: [Comment],
 		required: false,
 	},
 	like: {

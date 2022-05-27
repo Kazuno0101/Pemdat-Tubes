@@ -4,6 +4,9 @@ import PostList from './components/PostList.js';
 import AddUser from './components/AddUser.js';
 import AddPost from './components/AddPost.js';
 import EditUser from './components/EditUser.js';
+import EditPost from './components/EditPost.js';
+import CommentList from './components/CommentList.js';
+import AddComment from './components/AddComment.js';
 
 function App() {
 	return (
@@ -21,8 +24,12 @@ function App() {
 						}
 					/>
 					<Route path="/add" element={<AddUser />} />
-					<Route path="/post/add" element={<AddPost />} />
 					<Route path="/edit/:id" element={<EditUser />} />
+					<Route path="/post/add" element={<AddPost />} />
+					<Route path="/post/edit/:id" element={<EditPost />} />
+
+					<Route path="/post/comment/:id" element={<CommentList />} />
+					<Route path="/post/comment/add/:id" element={<AddComment />} />
 				</Routes>
 			</div>
 		</Switch>

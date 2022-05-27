@@ -2,30 +2,42 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 
-function EditPost() {
-	const [name, setName] = useState('');
-	const [email, setEmail] = useState('');
-	const [gender, setGender] = useState('Male');
+function AddPost() {
+	const [judul, setJudul] = useState('');
+	const [kategori, setKategori] = useState('');
+	const [isi, setIsi] = useState('');
+	const [author, setAuthor] = useState('');
+	const [like, setLike] = useState();
 	const navigate = useNavigate();
 	const { id } = useParams();
 
 	useEffect(() => {
-		const getPostById = async () => {
-			const res = await axios.get(`http://localhost:5000/Posts/${id}`);
-			setName(res.data.name);
-			setEmail(res.data.email);
-			setGender(res.data.gender);
+		const getUserById = async () => {
+			const res = await axios.get(`http://localhost:5000/post/${id}`);
+			setJudul(res.data.judul);
+			setKategori(res.data.kategori);
+			setIsi(res.data.isi);
+			setAuthor(res.data.author);
+			setLike(res.data.like);
 		};
-		getPostById();
+		getUserById();
 	}, []); // eslint-disable-line react-hooks/exhaustive-deps
 
 	const UpdatePost = async (e) => {
 		e.preventDefault();
 		try {
-			await axios.patch(`http://localhost:5000/Posts/${id}`, {
-				name,
-				email,
-				gender,
+			const json = JSON.stringify({
+				judul: judul,
+				kategori: kategori,
+				isi: isi,
+				author: author,
+				like: like,
+			});
+			await axios.patch(`http://localhost:5000/post/${id}`, json, {
+				headers: {
+					// Overwrite Axios's automatically set Content-Type
+					'Content-Type': 'application/json',
+				},
 			});
 			navigate('/');
 		} catch (error) {
@@ -41,43 +53,56 @@ function EditPost() {
 				</Link>
 				<form onSubmit={UpdatePost}>
 					<div className="field">
-						<label className="label">Name</label>
+						<label className="label">Judul</label>
 						<div className="control">
 							<input
 								type="text"
 								className="input"
-								placeholder="Name..."
-								value={name}
-								onChange={(e) => setName(e.target.value)}
+								placeholder="Judul..."
+								value={judul}
+								onChange={(e) => setJudul(e.target.value)}
 							/>
 						</div>
 					</div>
 					<div className="field">
-						<label className="label">Email</label>
+						<label className="label">Kategori</label>
 						<div className="control">
 							<input
 								type="text"
 								className="input"
-								placeholder="Email..."
-								value={email}
-								onChange={(e) => setEmail(e.target.value)}
+								placeholder="Kategori..."
+								value={kategori}
+								onChange={(e) => setKategori(e.target.value)}
 							/>
 						</div>
 					</div>
 					<div className="field">
-						<label className="label">Gender</label>
+						<label className="label">Isi</label>
 						<div className="control">
-							<div className="select is-fullwidth">
-								<select value={gender} onChange={(e) => setGender(e.target.value)}>
-									<option value="Male">Male</option>
-									<option value="Female">Female</option>
-								</select>
-							</div>
+							<input
+								type="text"
+								className="input"
+								placeholder="Isi..."
+								value={isi}
+								onChange={(e) => setIsi(e.target.value)}
+							/>
+						</div>
+					</div>
+					<div className="field">
+						<label className="label">Author</label>
+						<div className="control">
+							<input
+								type="text"
+								className="input"
+								placeholder="Author..."
+								value={author}
+								onChange={(e) => setAuthor(e.target.value)}
+							/>
 						</div>
 					</div>
 					<div className="field">
 						<button type="submit" className="button is-success">
-							Update
+							Save
 						</button>
 					</div>
 				</form>
@@ -86,4 +111,4 @@ function EditPost() {
 	);
 }
 
-export default EditPost;
+export default AddPost;
