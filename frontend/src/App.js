@@ -7,6 +7,7 @@ import EditUser from './components/EditUser.js';
 import EditPost from './components/EditPost.js';
 import CommentList from './components/CommentList.js';
 import AddComment from './components/AddComment.js';
+import EditComment from './components/EditComment.js';
 
 function App() {
 	return (
@@ -30,6 +31,7 @@ function App() {
 
 					<Route path="/post/comment/:id" element={<CommentList />} />
 					<Route path="/post/comment/add/:id" element={<AddComment />} />
+					<Route path="/post/comment/add/:id/:idComment" element={<EditComment />} />
 				</Routes>
 			</div>
 		</Switch>

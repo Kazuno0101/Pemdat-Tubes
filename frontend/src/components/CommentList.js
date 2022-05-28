@@ -15,33 +15,28 @@ const CommentList = () => {
 		setComment(res.data);
 	};
 
-	const handleDeleteComment = async (id) => {
-		const res = await axios.get(`http://localhost:5000/post/comment/${id}`);
-		alert(res.data);
+	const handleDeleteComment = async (idComment) => {
 		try {
-			const json = JSON.stringify({
-				like: res.data.like + 1,
-			});
-			await axios.patch(`http://localhost:5000/post/comment/${res.data.id}`, json, {
+			const json = JSON.stringify({ comment: { _id: idComment } });
+			const res = await axios.delete(`http://localhost:5000/post/comment/${id}`, json, {
 				headers: {
 					// Overwrite Axios's automatically set Content-Type
 					'Content-Type': 'application/json',
 				},
 			});
+			alert(json);
+			console.log(res);
 			getComment();
 		} catch (error) {
 			console.log(error);
-			alert(error);
 		}
 	};
 
-	const handleLike = async (id) => {
-		const res = await axios.get(`http://localhost:5000/post/comment/${id}`);
+	const handleLike = async (idComment) => {
+		const res = await axios.get(`http://localhost:5000/post/commentId/${idComment}`);
 		try {
-			const json = JSON.stringify({
-				like: res.data.like + 1,
-			});
-			await axios.patch(`http://localhost:5000/post/comment/${id}`, json, {
+			const json = JSON.stringify({ 'comment.$.like': res.data.like + 1 });
+			await axios.patch(`http://localhost:5000/post/comment/${id}/${idComment}`, json, {
 				headers: {
 					// Overwrite Axios's automatically set Content-Type
 					'Content-Type': 'application/json',
@@ -51,6 +46,25 @@ const CommentList = () => {
 		} catch (error) {
 			console.log(error);
 		}
+	};
+
+	const handleApprove = async (idComment) => {
+		try {
+			const json = JSON.stringify({ 'comment.$.approve': true });
+			await axios.patch(`http://localhost:5000/post/comment/${id}/${idComment}`, json, {
+				headers: {
+					// Overwrite Axios's automatically set Content-Type
+					'Content-Type': 'application/json',
+				},
+			});
+			getComment();
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
+	const handleShowApprove = (isi) => {
+		return isi ? 'Approve' : 'Not Approve';
 	};
 
 	const handleAddComment = (id) => {
@@ -70,34 +84,46 @@ const CommentList = () => {
 							<th>Username</th>
 							<th>Isi</th>
 							<th>Like</th>
+							<th>Approve</th>
 							<th>Action</th>
 						</tr>
 					</thead>
 					<tbody>
-						{comment.map((c) => (
-							<tr key={c.id}>
-								<td>{c.id}</td>
+						{comment.map((c, index) => (
+							<tr key={c._id}>
+								<td>{index}</td>
 								<td>{c.username}</td>
 								<td>{c.isi}</td>
 								<td>{c.like}</td>
+								<td>{handleShowApprove(c.approve)}</td>
 								<td>
 									<Link
-										to={`comment/edit/${c.username}`}
+										to={`/post/comment/add/${id}/${c._id}`}
 										className="button is-info is-small"
 									>
 										Edit
 									</Link>
 									<button
-										onClick={() => handleDeleteComment(id)}
+										onClick={() =>
+											handleDeleteComment(
+												c._id
+											)
+										}
 										className="mx-2 button is-danger is-small"
 									>
-										Delete
+										Delete {c._id}
 									</button>
 									<button
-										onClick={() => handleLike(id)}
+										onClick={() => handleLike(c._id)}
 										className="button is-primary is-small"
 									>
 										Like
+									</button>
+									<button
+										onClick={() => handleApprove(c._id)}
+										className="ml-2 button is-primary is-small"
+									>
+										Approve
 									</button>
 								</td>
 							</tr>

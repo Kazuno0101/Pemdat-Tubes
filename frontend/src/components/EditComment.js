@@ -1,26 +1,35 @@
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import React, { useState } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 
-function AddComment() {
+function EditComment() {
 	const [username, setUsername] = useState('');
 	const [isi, setIsi] = useState('');
 	const navigate = useNavigate();
-	const { id } = useParams();
+	const { id, idComment } = useParams();
 
-	const saveComment = async (e) => {
+	useEffect(() => {
+		const getUserById = async () => {
+			const res = await axios.get(`http://localhost:5000/post/commentId/${idComment}`);
+			setUsername(res.data.username);
+			setIsi(res.data.isi);
+		};
+		getUserById();
+	}, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+	const UpdateComment = async (e) => {
 		e.preventDefault();
 		try {
+			const res = await axios.get(`http://localhost:5000/post/commentId/${idComment}`);
 			const json = JSON.stringify({
 				comment: {
 					username: username,
 					isi: isi,
-					like: 0,
-					approve: false,
+					like: res.data.like,
+					approve: res.data.approve,
 				},
 			});
-			// const res = await axios.post('http://localhost:5000/post', json, {
-			await axios.post(`http://localhost:5000/post/comment/${id}`, json, {
+			await axios.patch(`http://localhost:5000/post/comment/${id}/${idComment}`, json, {
 				headers: {
 					// Overwrite Axios's automatically set Content-Type
 					'Content-Type': 'application/json',
@@ -38,7 +47,7 @@ function AddComment() {
 				<Link to="/" className="button is-primary">
 					Back
 				</Link>
-				<form onSubmit={saveComment}>
+				<form onSubmit={UpdateComment}>
 					<div className="field">
 						<label className="label">Username</label>
 						<div className="control">
@@ -74,4 +83,4 @@ function AddComment() {
 	);
 }
 
-export default AddComment;
+export default EditComment;
