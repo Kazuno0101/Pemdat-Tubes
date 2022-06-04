@@ -5,11 +5,9 @@ import { Link } from 'react-router-dom';
 
 const PostList = () => {
 	const [post, setPost] = useState([]);
-	const [user, setUser] = useState([]);
 
 	useEffect(() => {
 		getPost();
-		getUser();
 	}, []);
 
 	const getPost = async () => {
@@ -17,9 +15,11 @@ const PostList = () => {
 		setPost(res.data);
 	};
 
-	const getUser = async () => {
-		const res = await axios.get(`http://localhost:5000/post/${post.data._id}`);
-		setUser(res.data);
+	const getUsername = (id) => {
+		axios.get(`http://localhost:5000/users/${id}`).then((res) => {
+			console.log(res.data.username);
+			return res.data.username;
+		});
 	};
 
 	const handleDeletePost = async (id) => {
@@ -49,14 +49,6 @@ const PostList = () => {
 		}
 	};
 
-	// const getUsername = (id) => {
-	// 	user.map((u,index)=>(
-	// 		<>
-	// 		</>
-	// 		));
-	// 		return id;
-	// };
-
 	return (
 		<div className="columns is-half">
 			<div className="column">
@@ -82,7 +74,7 @@ const PostList = () => {
 								<td>{post.judul}</td>
 								<td>{post.kategori}</td>
 								<td>{post.isi}</td>
-								<td>{post.author}</td>
+								<td>{getUsername(post.author)}</td>
 								<td>{post.like}</td>
 								<td>
 									<Link
