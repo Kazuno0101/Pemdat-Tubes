@@ -1,13 +1,28 @@
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 
 function AddPost() {
 	const [judul, setJudul] = useState('');
-	const [kategori, setKategori] = useState('');
+	const [kategori, setKategori] = useState('Teknologi');
 	const [isi, setIsi] = useState('');
 	const [author, setAuthor] = useState('');
+	const [jenis, setJenis] = useState('');
+	const [subJenis, setSubJenis] = useState();
+	const [alatBantu, setAlatBantu] = useState();
+	const [merk, setMerk] = useState();
+	const [spesifikasi, setSpesifikasi] = useState();
 	const navigate = useNavigate();
+
+	const [users, setUser] = useState([]);
+	useEffect(() => {
+		getUsers();
+	}, []);
+
+	const getUsers = async () => {
+		const res = await axios.get('http://localhost:5000/users');
+		setUser(res.data);
+	};
 
 	const savePost = async (e) => {
 		e.preventDefault();
@@ -18,7 +33,15 @@ function AddPost() {
 				isi: isi,
 				author: author,
 				like: 0,
+				filter: {
+					jenis: jenis,
+					subJenis: subJenis,
+					alatBantu: alatBantu,
+					merk: merk,
+					spesifikasi: spesifikasi,
+				},
 			});
+
 			// const res = await axios.post('http://localhost:5000/post', json, {
 			await axios.post('http://localhost:5000/post', json, {
 				headers: {
@@ -32,13 +55,61 @@ function AddPost() {
 		}
 	};
 
+	const kategoriProperti = () => {
+		if (kategori === 'Olahraga') {
+			return (
+				<div className="field">
+					<label className="label">Alat Bantu</label>
+					<div className="control">
+						<input
+							type="text"
+							className="input"
+							placeholder="Alat Bantu..."
+							value={alatBantu}
+							onChange={(e) => setAlatBantu(e.target.value)}
+						/>
+					</div>
+				</div>
+			);
+		} else if (kategori === 'Teknologi') {
+			return (
+				<>
+					<div className="field">
+						<label className="label">Merk</label>
+						<div className="control">
+							<input
+								type="text"
+								className="input"
+								placeholder="Merk..."
+								value={merk}
+								onChange={(e) => setMerk(e.target.value)}
+							/>
+						</div>
+					</div>
+					<div className="field">
+						<label className="label">Spesifikasi</label>
+						<div className="control">
+							<input
+								type="text"
+								className="input"
+								placeholder="Spesifikasi..."
+								value={spesifikasi}
+								onChange={(e) => setSpesifikasi(e.target.value)}
+							/>
+						</div>
+					</div>
+				</>
+			);
+		}
+	};
+
 	return (
-		<div className="columns">
-			<div className="column is-half">
-				<Link to="/" className="button is-primary">
-					Back
-				</Link>
-				<form onSubmit={savePost}>
+		<form onSubmit={savePost}>
+			<Link to="/" className="my-3 button is-primary">
+				Back
+			</Link>
+			<div className="columns">
+				<div className="column">
 					<div className="field">
 						<label className="label">Judul</label>
 						<div className="control">
@@ -54,37 +125,37 @@ function AddPost() {
 					<div className="field">
 						<label className="label">Kategori</label>
 						<div className="control">
-							<input
-								type="text"
-								className="input"
-								placeholder="Kategori..."
-								value={kategori}
-								onChange={(e) => setKategori(e.target.value)}
-							/>
+							<div className="select is-fullwidth">
+								<select value={kategori} onChange={(e) => setKategori(e.target.value)}>
+									<option value="Teknologi">Teknologi</option>
+									<option value="Olahraga">Olahraga</option>
+								</select>
+							</div>
 						</div>
 					</div>
 					<div className="field">
 						<label className="label">Isi</label>
 						<div className="control">
-							<input
-								type="text"
-								className="input"
+							<textarea
+								class="textarea"
 								placeholder="Isi..."
 								value={isi}
 								onChange={(e) => setIsi(e.target.value)}
-							/>
+							></textarea>
 						</div>
 					</div>
 					<div className="field">
 						<label className="label">Author</label>
 						<div className="control">
-							<input
-								type="text"
-								className="input"
-								placeholder="Author..."
-								value={author}
-								onChange={(e) => setAuthor(e.target.value)}
-							/>
+							<div className="select is-fullwidth">
+								<select value={author} onChange={(e) => setAuthor(e.target.value)}>
+									{users.map((user) => (
+										<option key={user._id} value={user._id}>
+											{user.username}
+										</option>
+									))}
+								</select>
+							</div>
 						</div>
 					</div>
 					<div className="field">
@@ -92,9 +163,36 @@ function AddPost() {
 							Save
 						</button>
 					</div>
-				</form>
+				</div>
+				<div className="column">
+					<div className="field">
+						<label className="label">Jenis</label>
+						<div className="control">
+							<input
+								type="text"
+								className="input"
+								placeholder="Jenis..."
+								value={jenis}
+								onChange={(e) => setJenis(e.target.value)}
+							/>
+						</div>
+					</div>
+					<div className="field">
+						<label className="label">Sub Jenis</label>
+						<div className="control">
+							<input
+								type="text"
+								className="input"
+								placeholder="Sub Jenis..."
+								value={subJenis}
+								onChange={(e) => setSubJenis(e.target.value)}
+							/>
+						</div>
+					</div>
+					{kategoriProperti()}
+				</div>
 			</div>
-		</div>
+		</form>
 	);
 }
 

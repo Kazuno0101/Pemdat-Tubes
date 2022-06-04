@@ -5,13 +5,21 @@ import { Link } from 'react-router-dom';
 
 const PostList = () => {
 	const [post, setPost] = useState([]);
+	const [user, setUser] = useState([]);
+
 	useEffect(() => {
 		getPost();
+		getUser();
 	}, []);
 
 	const getPost = async () => {
 		const res = await axios.get('http://localhost:5000/post');
 		setPost(res.data);
+	};
+
+	const getUser = async () => {
+		const res = await axios.get(`http://localhost:5000/post/${post.data._id}`);
+		setUser(res.data);
 	};
 
 	const handleDeletePost = async (id) => {
@@ -40,6 +48,15 @@ const PostList = () => {
 			console.log(error);
 		}
 	};
+
+	// const getUsername = (id) => {
+	// 	user.map((u,index)=>(
+	// 		<>
+	// 		</>
+	// 		));
+	// 		return id;
+	// };
+
 	return (
 		<div className="columns is-half">
 			<div className="column">
@@ -95,6 +112,12 @@ const PostList = () => {
 										className="button is-info is-small"
 									>
 										Comment
+									</Link>
+									<Link
+										to={`post/${post._id}`}
+										className="button is-info is-small"
+									>
+										Detail
 									</Link>
 								</td>
 							</tr>

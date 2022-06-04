@@ -5,6 +5,7 @@ import { useNavigate, useParams, Link } from 'react-router-dom';
 function EditUser() {
 	const [name, setName] = useState('');
 	const [email, setEmail] = useState('');
+	const [username, setUsername] = useState('');
 	const [gender, setGender] = useState('Male');
 	const navigate = useNavigate();
 	const { id } = useParams();
@@ -14,6 +15,7 @@ function EditUser() {
 			const res = await axios.get(`http://localhost:5000/users/${id}`);
 			setName(res.data.name);
 			setEmail(res.data.email);
+			setUsername(res.data.username);
 			setGender(res.data.gender);
 		};
 		getUserById();
@@ -22,10 +24,17 @@ function EditUser() {
 	const UpdateUser = async (e) => {
 		e.preventDefault();
 		try {
-			await axios.patch(`http://localhost:5000/users/${id}`, {
-				name,
-				email,
-				gender,
+			const json = JSON.stringify({
+				name: name,
+				email: email,
+				username: username,
+				gender: gender,
+			});
+			await axios.patch(`http://localhost:5000/users/${id}`, json, {
+				headers: {
+					// Overwrite Axios's automatically set Content-Type
+					'Content-Type': 'application/json',
+				},
 			});
 			navigate('/');
 		} catch (error) {
@@ -61,6 +70,18 @@ function EditUser() {
 								placeholder="Email..."
 								value={email}
 								onChange={(e) => setEmail(e.target.value)}
+							/>
+						</div>
+					</div>
+					<div className="field">
+						<label className="label">Username</label>
+						<div className="control">
+							<input
+								type="text"
+								className="input"
+								placeholder="Username..."
+								value={username}
+								onChange={(e) => setUsername(e.target.value)}
 							/>
 						</div>
 					</div>

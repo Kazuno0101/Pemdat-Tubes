@@ -23,6 +23,29 @@ const Comment = mongoose.Schema({
 	},
 });
 
+const Filter = mongoose.Schema({
+	jenis: {
+		type: String,
+		required: true,
+	},
+	subJenis: {
+		type: String,
+		required: false,
+	},
+	alatBantu: {
+		type: String,
+		required: false,
+	},
+	merk: {
+		type: String,
+		required: false,
+	},
+	spesifikasi: {
+		type: String,
+		required: false,
+	},
+});
+
 const Post = mongoose.Schema({
 	judul: {
 		type: String,
@@ -47,6 +70,10 @@ const Post = mongoose.Schema({
 	like: {
 		type: Number,
 		required: true,
+	},
+	filter: {
+		type: Filter,
+		required: false,
 	},
 });
 

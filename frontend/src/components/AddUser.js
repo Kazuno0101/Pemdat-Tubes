@@ -5,6 +5,8 @@ import { useNavigate, Link } from 'react-router-dom';
 function AddUser() {
 	const [name, setName] = useState('');
 	const [email, setEmail] = useState('');
+	const [username, setUsername] = useState('');
+	const [password, setPassword] = useState('');
 	const [gender, setGender] = useState('Male');
 	const navigate = useNavigate();
 
@@ -14,6 +16,8 @@ function AddUser() {
 			await axios.post('http://localhost:5000/users', {
 				name,
 				email,
+				username,
+				password,
 				gender,
 			});
 			navigate('/');
@@ -50,6 +54,30 @@ function AddUser() {
 								placeholder="Email..."
 								value={email}
 								onChange={(e) => setEmail(e.target.value)}
+							/>
+						</div>
+					</div>
+					<div className="field">
+						<label className="label">Username</label>
+						<div className="control">
+							<input
+								type="text"
+								className="input"
+								placeholder="Username..."
+								value={username}
+								onChange={(e) => setUsername(e.target.value)}
+							/>
+						</div>
+					</div>
+					<div className="field">
+						<label className="label">Password</label>
+						<div className="control">
+							<input
+								type="password"
+								className="input"
+								placeholder="Password..."
+								value={password}
+								onChange={(e) => setPassword(e.target.value)}
 							/>
 						</div>
 					</div>

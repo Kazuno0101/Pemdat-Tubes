@@ -63,13 +63,12 @@ function EditComment() {
 					<div className="field">
 						<label className="label">Isi</label>
 						<div className="control">
-							<input
-								type="text"
-								className="input"
+							<textarea
+								class="textarea"
 								placeholder="Isi..."
 								value={isi}
 								onChange={(e) => setIsi(e.target.value)}
-							/>
+							></textarea>
 						</div>
 					</div>
 					<div className="field">

@@ -91,7 +91,7 @@ const CommentList = () => {
 					<tbody>
 						{comment.map((c, index) => (
 							<tr key={c._id}>
-								<td>{index}</td>
+								<td>{index + 1}</td>
 								<td>{c.username}</td>
 								<td>{c.isi}</td>
 								<td>{c.like}</td>
