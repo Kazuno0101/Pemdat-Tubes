@@ -30,6 +30,7 @@ function EditComment() {
 					isi: isi,
 					like: res.data.like,
 					approve: res.data.approve,
+					create_at: res.data.create_at,
 					update_at: date,
 				},
 			});
