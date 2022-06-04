@@ -8,6 +8,9 @@ function EditComment() {
 	const navigate = useNavigate();
 	const { id, idComment } = useParams();
 
+	const current = new Date();
+	const date = `${current.getHours()}:${current.getMinutes()}:${current.getSeconds()} ${current.getDate()}/${current.getMonth() + 1}/${current.getFullYear()}`;
+
 	useEffect(() => {
 		const getUserById = async () => {
 			const res = await axios.get(`http://localhost:5000/post/commentId/${idComment}`);
@@ -27,6 +30,7 @@ function EditComment() {
 					isi: isi,
 					like: res.data.like,
 					approve: res.data.approve,
+					update_at: date,
 				},
 			});
 			await axios.patch(`http://localhost:5000/post/comment/${id}/${idComment}`, json, {

@@ -72,8 +72,11 @@ const CommentList = () => {
 	};
 
 	return (
-		<div className="columns is-half">
+		<div className="mt-5 columns is-half">
 			<div className="column">
+				<Link to="/" className="mr-5 button is-primary">
+					Back
+				</Link>
 				<button onClick={() => handleAddComment(id)} className="button is-primary">
 					Add Comment
 				</button>
@@ -85,6 +88,8 @@ const CommentList = () => {
 							<th>Isi</th>
 							<th>Like</th>
 							<th>Approve</th>
+							<th>Dibuat</th>
+							<th>Terakhir diubah</th>
 							<th>Action</th>
 						</tr>
 					</thead>
@@ -96,6 +101,8 @@ const CommentList = () => {
 								<td>{c.isi}</td>
 								<td>{c.like}</td>
 								<td>{handleShowApprove(c.approve)}</td>
+								<td>{c.create_at}</td>
+								<td>{c.update_at}</td>
 								<td>
 									<Link
 										to={`/post/comment/add/${id}/${c._id}`}

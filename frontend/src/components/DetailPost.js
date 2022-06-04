@@ -13,6 +13,8 @@ function DetailPost() {
 	const [alatBantu, setAlatBantu] = useState();
 	const [merk, setMerk] = useState();
 	const [spesifikasi, setSpesifikasi] = useState();
+	const [create, setCreate] = useState();
+	const [update, setUpdate] = useState();
 	const { id } = useParams();
 
 	const [users, setUser] = useState([]);
@@ -30,6 +32,8 @@ function DetailPost() {
 			setAlatBantu(res.data.filter.alatBantu);
 			setMerk(res.data.filter.merk);
 			setSpesifikasi(res.data.filter.spesifikasi);
+			setCreate(res.data.create_at);
+			setUpdate(res.data.update_at);
 		};
 		const getUsers = async () => {
 			const res = await axios.get('http://localhost:5000/users');
@@ -108,6 +112,18 @@ function DetailPost() {
 						<label className="label">Like</label>
 						<div className="control">
 							<input disabled className="input" value={like} />
+						</div>
+					</div>
+					<div className="field">
+						<label className="label">Dibuat </label>
+						<div className="control">
+							<input disabled className="input" value={create} />
+						</div>
+					</div>
+					<div className="field">
+						<label className="label">Terakhir Diubah</label>
+						<div className="control">
+							<input disabled className="input" value={update} />
 						</div>
 					</div>
 				</div>

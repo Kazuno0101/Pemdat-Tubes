@@ -36,6 +36,8 @@ const UserList = () => {
 							<th>Email</th>
 							<th>Username</th>
 							<th>Gender</th>
+							<th>Dibuat</th>
+							<th>Terakhir diubah</th>
 							<th>Actions</th>
 						</tr>
 					</thead>
@@ -47,6 +49,8 @@ const UserList = () => {
 								<td>{user.email}</td>
 								<td>{user.username}</td>
 								<td>{user.gender}</td>
+								<td>{user.create_at}</td>
+								<td>{user.update_at}</td>
 								<td>
 									<Link
 										to={`edit/${user._id}`}
@@ -60,7 +64,7 @@ const UserList = () => {
 												user._id
 											)
 										}
-										className="button is-danger is-small"
+										className="ml-2 button is-danger is-small"
 									>
 										Delete
 									</button>

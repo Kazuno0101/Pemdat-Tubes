@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 
 function AddComment() {
@@ -7,6 +7,18 @@ function AddComment() {
 	const [isi, setIsi] = useState('');
 	const navigate = useNavigate();
 	const { id } = useParams();
+	const [users, setUser] = useState([]);
+
+	const current = new Date();
+	const date = `${current.getHours()}:${current.getMinutes()}:${current.getSeconds()} ${current.getDate()}/${current.getMonth() + 1}/${current.getFullYear()}`;
+
+	useEffect(() => {
+		getUsers();
+	}, []);
+	const getUsers = async () => {
+		const res = await axios.get('http://localhost:5000/users');
+		setUser(res.data);
+	};
 
 	const saveComment = async (e) => {
 		e.preventDefault();
@@ -17,6 +29,8 @@ function AddComment() {
 					isi: isi,
 					like: 0,
 					approve: false,
+					create_at: date,
+					update_at: date,
 				},
 			});
 			// const res = await axios.post('http://localhost:5000/post', json, {
@@ -42,13 +56,21 @@ function AddComment() {
 					<div className="field">
 						<label className="label">Username</label>
 						<div className="control">
-							<input
-								type="text"
-								className="input"
-								placeholder="Kategori..."
-								value={username}
-								onChange={(e) => setUsername(e.target.value)}
-							/>
+							<div className="select is-fullwidth">
+								<select value={username} onChange={(e) => setUsername(e.target.value)}>
+									<option>---Username---</option>
+									{users.map((user) => (
+										<option
+											key={user._id}
+											value={
+												user.username
+											}
+										>
+											{user.username}
+										</option>
+									))}
+								</select>
+							</div>
 						</div>
 					</div>
 					<div className="field">

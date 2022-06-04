@@ -21,6 +21,14 @@ const Comment = mongoose.Schema({
 		type: Boolean,
 		required: false,
 	},
+	create_at: {
+		type: String,
+		required: true,
+	},
+	update_at: {
+		type: String,
+		required: true,
+	},
 });
 
 const Filter = mongoose.Schema({
@@ -74,6 +82,14 @@ const Post = mongoose.Schema({
 	filter: {
 		type: Filter,
 		required: false,
+	},
+	create_at: {
+		type: String,
+		required: true,
+	},
+	update_at: {
+		type: String,
+		required: true,
 	},
 });
 

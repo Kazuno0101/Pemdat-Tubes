@@ -103,19 +103,19 @@ const PostList = () => {
 									</button>
 									<button
 										onClick={() => handleLike(post._id)}
-										className="mr-2 button is-primary is-small"
+										className="button is-primary is-small"
 									>
 										Like
 									</button>
 									<Link
 										to={`post/comment/${post._id}`}
-										className="button is-info is-small"
+										className="mx-2 button is-link is-small"
 									>
 										Comment
 									</Link>
 									<Link
 										to={`post/${post._id}`}
-										className="button is-info is-small"
+										className="button is-warning is-small"
 									>
 										Detail
 									</Link>

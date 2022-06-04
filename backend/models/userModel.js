@@ -27,6 +27,14 @@ const User = mongoose.Schema({
 		type: String,
 		required: true,
 	},
+	create_at: {
+		type: String,
+		required: true,
+	},
+	update_at: {
+		type: String,
+		required: true,
+	},
 });
 
 export default mongoose.model('Users', User);

@@ -18,6 +18,9 @@ function AddPost() {
 
 	const [users, setUser] = useState([]);
 
+	const current = new Date();
+	const date = `${current.getHours()}:${current.getMinutes()}:${current.getSeconds()} ${current.getDate()}/${current.getMonth() + 1}/${current.getFullYear()}`;
+
 	useEffect(() => {
 		const getUserById = async () => {
 			const res = await axios.get(`http://localhost:5000/post/${id}`);
@@ -56,6 +59,7 @@ function AddPost() {
 					merk: merk,
 					spesifikasi: spesifikasi,
 				},
+				update_at: date,
 			});
 			await axios.patch(`http://localhost:5000/post/${id}`, json, {
 				headers: {

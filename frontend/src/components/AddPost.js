@@ -6,7 +6,7 @@ function AddPost() {
 	const [judul, setJudul] = useState('');
 	const [kategori, setKategori] = useState('Teknologi');
 	const [isi, setIsi] = useState('');
-	const [author, setAuthor] = useState('');
+	const [author, setAuthor] = useState();
 	const [jenis, setJenis] = useState('');
 	const [subJenis, setSubJenis] = useState();
 	const [alatBantu, setAlatBantu] = useState();
@@ -15,6 +15,10 @@ function AddPost() {
 	const navigate = useNavigate();
 
 	const [users, setUser] = useState([]);
+
+	const current = new Date();
+	const date = `${current.getHours()}:${current.getMinutes()}:${current.getSeconds()} ${current.getDate()}/${current.getMonth() + 1}/${current.getFullYear()}`;
+
 	useEffect(() => {
 		getUsers();
 	}, []);
@@ -40,8 +44,9 @@ function AddPost() {
 					merk: merk,
 					spesifikasi: spesifikasi,
 				},
+				create_at: date,
+				update_at: date,
 			});
-
 			// const res = await axios.post('http://localhost:5000/post', json, {
 			await axios.post('http://localhost:5000/post', json, {
 				headers: {
@@ -51,6 +56,7 @@ function AddPost() {
 			});
 			navigate('/');
 		} catch (error) {
+			// alert(date);
 			alert(error);
 		}
 	};
@@ -149,6 +155,7 @@ function AddPost() {
 						<div className="control">
 							<div className="select is-fullwidth">
 								<select value={author} onChange={(e) => setAuthor(e.target.value)}>
+									<option>---Author---</option>
 									{users.map((user) => (
 										<option key={user._id} value={user._id}>
 											{user.username}

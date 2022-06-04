@@ -10,6 +10,9 @@ function AddUser() {
 	const [gender, setGender] = useState('Male');
 	const navigate = useNavigate();
 
+	const current = new Date();
+	const date = `${current.getHours()}:${current.getMinutes()}:${current.getSeconds()} ${current.getDate()}/${current.getMonth() + 1}/${current.getFullYear()}`;
+
 	const saveUser = async (e) => {
 		e.preventDefault();
 		try {
@@ -19,6 +22,8 @@ function AddUser() {
 				username,
 				password,
 				gender,
+				date,
+				date,
 			});
 			navigate('/');
 		} catch (error) {
